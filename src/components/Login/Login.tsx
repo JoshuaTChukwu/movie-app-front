@@ -1,18 +1,55 @@
-import React, { FC, useState } from 'react';
+import React, { Component, FC } from 'react';
 import logo from '../../assets/logo.png'
 import styles from './Login.module.css';
+import {authCall} from '../../endpoints/authCall'
+import { LoginType } from '../../types/AuthType';
+import call from '../../endpoints/calls';
 
 interface LoginProps {
-  onLogin : (email: string, password: string)=> void;
+
+}
+interface LoginState{
+  email : string,
+  password : string,
+  loading : boolean,
+  isAuthenticated: boolean,
+  shouldVerify : boolean
 }
 
-const Login: React.FC<LoginProps> = ({onLogin}) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSignIn = () => {
-    onLogin(email, password);
+class Login extends Component<LoginProps,LoginState>  {
+  
+  constructor(props : LoginProps, private apiCall : authCall) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      loading: false,
+      isAuthenticated: false,
+      shouldVerify: false,
+      
+    };
+    this.apiCall = new authCall(new call())
+      
+  }
+  handleChange = (e:any) => {
+    this.setState({
+      ...this.state,
+      [e.target.name]: e.target.value,
+    });
   };
+
+   handleSignIn = () => {
+    const { password , email } = this.state;
+    const request : LoginType ={
+      userName :email,
+      password : password
+    }
+
+    console.log(this.apiCall);
+    
+     this.apiCall.signIn(request);
+  };
+  render(){
   return (
 
       <div className={styles.signInContainer}>
@@ -26,8 +63,8 @@ const Login: React.FC<LoginProps> = ({onLogin}) => {
           <input
             type="text"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="email"
+            onChange={(e) => this.handleChange(e)}
             className={styles.signInFormInput}
           />
         </div>
@@ -35,12 +72,12 @@ const Login: React.FC<LoginProps> = ({onLogin}) => {
           <input
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            onChange={(e) => this.handleChange(e)}
             className={styles.signInFormInput}
           />
         </div>
-        <button  className={styles.signInFormButton}>
+        <button onClick={this.handleSignIn}  className={styles.signInFormButton}>
           Sign In
         </button>
       </div>
@@ -50,6 +87,7 @@ const Login: React.FC<LoginProps> = ({onLogin}) => {
     </div>
 
 )
-};
+}};
 
 export default Login;
+

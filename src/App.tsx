@@ -8,9 +8,7 @@ function App() {
   return (
     <BrowserRouter>
     <Routes>
- <Route path='/'  element={<Login onLogin={function (email: string, password: string): void {
-          throw new Error('Function not implemented.');
-        } }/>} ></Route>
+ <Route path='/'  element={<Login/>} ></Route>
     </Routes>
     </BrowserRouter>
   );
