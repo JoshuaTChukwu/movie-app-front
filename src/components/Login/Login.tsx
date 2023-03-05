@@ -4,6 +4,7 @@ import styles from './Login.module.css';
 import {authCall} from '../../endpoints/authCall'
 import { LoginType } from '../../types/AuthType';
 import call from '../../endpoints/calls';
+import Swal from 'sweetalert2';
 
 interface LoginProps {
 
@@ -38,16 +39,19 @@ class Login extends Component<LoginProps,LoginState>  {
     });
   };
 
-   handleSignIn = () => {
+   handleSignIn = async() => {
     const { password , email } = this.state;
     const request : LoginType ={
       userName :email,
       password : password
     }
 
-    console.log(this.apiCall);
     
-     this.apiCall.signIn(request);
+    
+    const sendCall =await this.apiCall.signIn(request);
+    if(sendCall.isSuccess == false){
+      Swal.fire("Error",sendCall.friendlyMessage,"error")
+    }
   };
   render(){
   return (

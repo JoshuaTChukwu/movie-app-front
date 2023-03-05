@@ -1,9 +1,10 @@
 import { type } from "os";
-import config from "dotenv"
+import env from "react-dotenv";
+console.log(process.env);
 
 export const configs: configType={
     
- api : process.env.API_URL??""
+ api : process.env.REACT_APP_API_URL??""
 }
 type configType ={
   api : string 
