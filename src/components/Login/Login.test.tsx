@@ -5,7 +5,12 @@ import Login from './Login';
 
 describe('<Login />', () => {
   test('it should mount', () => {
-    render(<Login />);
+    render(<Login onLogin={function (email: string, password: string): void {
+      throw new Error('Function not implemented.');
+    } } />)
+    expect(screen.getByLabelText("Email")).toBeInTheDocument();
+    expect(screen.getByLabelText("Password")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /sign in/i })).toBeInTheDocument();
     
     const login = screen.getByTestId('Login');
 
