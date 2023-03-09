@@ -1,5 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import React, { Component, useEffect } from 'react';
-import { Button, Form } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import call from '../../endpoints/calls';
 import MovieCall from '../../endpoints/MovieCall';
@@ -17,21 +18,28 @@ interface MovieListState{
 }
 
 class MovieList extends Component<MovieListProps, MovieListState>{ 
- 
+  
   constructor(props: MovieListProps, private apiCall : MovieCall) {
+    let title = (new URLSearchParams(window.location.search)).get("t")??'';
     super(props);
-    // this.state ={
-    //     boxes :[]
-    // }
+    this.state ={
+     title :title,
+     list :[],
+     hasNext:false,
+     pageNumber:1,
+     hasPrev :false
+     }
     this.apiCall = new MovieCall(new call());
 
  
   }
   componentDidMount() {
-    // This is equivalent to the useEffect with an empty array as a dependency
-    // It only runs once, after the component has mounted
+   
     const fetchData = async () => {
-      await this.callList(); 
+        if(this.state.title != ''){
+            this.handleSubmit()
+        }
+      
     }
     fetchData()
   }
@@ -57,13 +65,28 @@ class MovieList extends Component<MovieListProps, MovieListState>{
         Page : this.state.pageNumber,
         SearchValue : this.state.title
     }
-    
-    
+    var movies = await this.apiCall.searchMovies(request);
+    if(movies.status.isSuccess == false){
+        Swal.fire("Error",movies.status.friendlyMessage,"error")
+        return
+    }
+    this.setState({
+        ...this.state,
+        hasPrev : movies.response.hasPrev,
+        hasNext: movies.response.hasNext,
+        list : movies.response.search
+    })
+
+    return
   };
   
   render(){
     
     
+      function solid(arg0: string): import("@fortawesome/fontawesome-svg-core").IconProp {
+          throw new Error('Function not implemented.');
+      }
+
     return(
       <div>
         <HomeNav></HomeNav>
@@ -71,12 +94,13 @@ class MovieList extends Component<MovieListProps, MovieListState>{
 
         <div className={styles.searchContainer}>
   <input type="text" placeholder="Search..." onChange={(e) => this.handleInputChange(e)}/>
-  <button type="submit"><i className="fas fa-search"></i></button>
+  <button className={styles.button} onClick={this.handleSubmit}><FontAwesomeIcon icon={faSearch} /></button>
 </div>
 
       </div>
     
 
 )}};
+
 
 export default MovieList;
