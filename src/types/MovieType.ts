@@ -1,3 +1,4 @@
+import { type } from "os"
 import { StatusFormat } from "./AuthType"
 
 export type QueriesSearched ={
@@ -16,5 +17,13 @@ export type AllMovieRes ={
     page : number,
     hasPrev : boolean,
     hasNext : boolean,
+}
+export type AllMovieResObj ={
+    response : AllMovieRes,
+    status : StatusFormat
+}
+export type SearchQuery ={
+    SearchValue:string,
+    Page :number
 }
 
