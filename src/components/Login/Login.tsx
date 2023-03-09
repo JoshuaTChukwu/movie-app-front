@@ -1,20 +1,23 @@
-import React, { Component, FC } from 'react';
+import React, { Component, FC, useEffect } from 'react';
 import logo from '../../assets/logo.png'
 import styles from './Login.module.css';
 import {authCall} from '../../endpoints/authCall'
 import { LoginType } from '../../types/AuthType';
 import call from '../../endpoints/calls';
 import Swal from 'sweetalert2';
+import {  NavigateFunction, useNavigate  } from 'react-router-dom';
+import ClipLoader from 'react-spinners/ClipLoader';
 
-interface LoginProps {
-
+interface LoginProps   {
+  navigate: NavigateFunction;
 }
 interface LoginState{
   email : string,
   password : string,
   loading : boolean,
   isAuthenticated: boolean,
-  shouldVerify : boolean
+  shouldVerify : boolean,
+  color :string
 }
 
 class Login extends Component<LoginProps,LoginState>  {
@@ -27,8 +30,9 @@ class Login extends Component<LoginProps,LoginState>  {
       loading: false,
       isAuthenticated: false,
       shouldVerify: false,
-      
+      color :"#ffffff"
     };
+     
     this.apiCall = new authCall(new call())
       
   }
@@ -40,6 +44,10 @@ class Login extends Component<LoginProps,LoginState>  {
   };
 
    handleSignIn = async() => {
+    this.setState({
+      ...this.state,
+      loading :true
+    })
     const { password , email } = this.state;
     const request : LoginType ={
       userName :email,
@@ -50,10 +58,23 @@ class Login extends Component<LoginProps,LoginState>  {
     
     const sendCall =await this.apiCall.signIn(request);
     if(sendCall.isSuccess == false){
+      this.setState({
+        ...this.state,
+        loading :false
+      })
       Swal.fire("Error",sendCall.friendlyMessage,"error")
     }
+    this.setState({
+      ...this.state,
+      loading :false
+    })
+    this.props.navigate("/dashboard")
+  
+  
   };
   render(){
+    console.log(this.state);
+    
   return (
 
       <div className={styles.signInContainer}>
@@ -88,10 +109,24 @@ class Login extends Component<LoginProps,LoginState>  {
       <div className={styles.signInWatermarkContainer}>
         <div className={styles.signInWatermarkText}>Watermark Text</div>
       </div>
+      <ClipLoader
+        color={this.state.color}
+        loading={this.state.loading}
+        
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
     </div>
 
 )
 }};
 
-export default Login;
+function WithLoginNavigate(props: LoginProps): JSX.Element {
+  const navigate = useNavigate();
+  return <Login {...props} navigate={navigate} />;
+}
+
+
+export default WithLoginNavigate;
 

@@ -19,7 +19,17 @@ export  class authCall{
     console.log(status);
     
       if(status.isSuccess){
-this.setLocalStorage("token",login.token)
+this.setLocalStorage("token",login.token);
+var profile = await this.apiCall.getWithAuth("users/profile/get");
+   const peofileStatus : StatusFormat = {
+        isSuccess : profile.status.isSuccess,
+        friendlyMessage :profile.status.friendlyMessage 
+        }
+        if(peofileStatus.isSuccess){
+            this.setLocalStorage("name",profile.profile.fullName);
+            this.setLocalStorage("email",profile.profile.email);
+            this.setLocalStorage("gender",profile.profile.gender)
+        }
       } 
    
     return status;

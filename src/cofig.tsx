@@ -1,5 +1,4 @@
 import { type } from "os";
-import env from "react-dotenv";
 console.log(process.env);
 
 export const configs: configType={
