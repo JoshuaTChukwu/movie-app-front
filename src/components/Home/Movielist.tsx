@@ -13,7 +13,6 @@ interface MovieListState{
     hasPrev : boolean,
     hasNext : boolean,
     pageNumber :number,
-    boxes: string[] 
 }
 
 class MovieList extends Component<MovieListProps, MovieListState>{ 
@@ -41,7 +40,7 @@ class MovieList extends Component<MovieListProps, MovieListState>{
         Swal.fire("Error",call.status.friendlyMessage,"error")
         return
     }
-    this.setState({... this.state,boxes:call.queries})
+    
    
 
     

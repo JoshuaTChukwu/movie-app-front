@@ -11,3 +11,10 @@ export type AllMovieList= {
     type: string,
     poster:string
 }
+export type AllMovieRes ={
+    search : AllMovieList[],
+    page : number,
+    hasPrev : boolean,
+    hasNext : boolean,
+}
+
