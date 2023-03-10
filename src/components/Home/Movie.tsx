@@ -6,18 +6,46 @@ import call from '../../endpoints/calls';
 import MovieCall from '../../endpoints/MovieCall';
 import HomeNav from './Home';
 import styles from './Home.module.css';
+import { MovieSingle } from '../../types/MovieType';
 
 interface MovieProps {}
 interface MovieState{
-    
+    movie : MovieSingle
 }
 
 class Movie extends Component<MovieProps, MovieState>{ 
   
   constructor(props: MovieProps, private apiCall : MovieCall) {
-    let title = (new URLSearchParams(window.location.search)).get("t")??'';
+  
     super(props);
     this.state ={
+      movie : {
+        title: '',
+    year: '',
+    rated: '',
+    released: '',
+    runtime: '',
+    genre: '',
+    director: '',
+    writer: '',
+    actors: '',
+    plot: '',
+    language: '',
+    country: '',
+    awards: '',
+    poster: '',
+    ratings: [],
+    metascore: '',
+    imdbRating: '',
+    imdbVotes: '',
+    imdbID: '',
+    type: '',
+    dvd: '',
+    boxOffice: '',
+    production: '',
+    website: '',
+    response: ''
+      }
     
      }
     this.apiCall = new MovieCall(new call());
@@ -27,13 +55,25 @@ class Movie extends Component<MovieProps, MovieState>{
   componentDidMount() {
    
     const fetchData = async () => {
-       
-      
+     const id = (new URLSearchParams(window.location.search)).get("omdb")??''
+      await this.callList(id);
     }
     fetchData()
   }
   
+  async callList(id:string){
+    var call = await this.apiCall.getSingleMovie(id);
+    if(call.status.isSuccess == false){
+        Swal.fire("Error",call.status.friendlyMessage,"error")
+        return
+    }
+    this.setState({... this.state,movie:call.response})
+   
 
+    
+    return
+
+  }
    
   
   
@@ -48,17 +88,17 @@ class Movie extends Component<MovieProps, MovieState>{
       <div>
         <HomeNav></HomeNav>
         <section>
-      <img className="movie-poster" src="https://example.com/poster.jpg" alt="Movie Poster"/>
+      <img className="movie-poster" src={this.state.movie.poster} alt="Movie Poster"/>
       <div className={styles.movieInfo}>
         <h2>Movie Details</h2>
         <ul>
-          <li><strong>Release Date:</strong> January 1, 2023</li>
-          <li><strong>Runtime:</strong> 120 minutes</li>
-          <li><strong>Genres:</strong> Action, Adventure</li>
-          <li><strong>Director:</strong> John Smith</li>
-          <li><strong>Writers:</strong> Jane Doe, Tom Johnson</li>
-          <li><strong>Stars:</strong> John Doe, Jane Smith, Tom Johnson</li>
-          <li><strong>Plot:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+          <li><strong>Release Date:</strong> {this.state.movie.released}</li>
+          <li><strong>Runtime:</strong> {this.state.movie.runtime}</li>
+          <li><strong>Genres:</strong> {this.state.movie.genre}</li>
+          <li><strong>Director:</strong> {this.state.movie.director}h</li>
+          <li><strong>Writers:</strong> {this.state.movie.writer}</li>
+          <li><strong>Stars:</strong> {this.state.movie.actors}</li>
+          <li><strong>Plot:</strong> {this.state.movie.plot}</li>
         </ul>
       </div>
     </section>

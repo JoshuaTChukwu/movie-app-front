@@ -67,7 +67,11 @@ class MovieList extends Component<MovieListProps, MovieListState>{
 
     return
   };
-  
+  handleClick = (event: any)=>{
+    window.location.href = `movie?omdb=${event}`
+    
+
+  }  
   render(){
     
     
@@ -87,7 +91,7 @@ class MovieList extends Component<MovieListProps, MovieListState>{
 <ul>
     {
         this.state.list.map((movie)=>(
-            <li key={movie.imdbID} className={styles.movieItem}>
+            <li key={movie.imdbID} className={styles.movieItem} onClick={() =>this.handleClick(movie.imdbID)}>
   <img className={styles.moviePoster} src={movie.poster} alt="Movie Poster"/>
   <div className={styles.movieDetails}>
     <h2 className={styles.movieTitle}>{movie.title}</h2>

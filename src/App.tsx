@@ -7,6 +7,7 @@ import Dashboard from './components/Home/Dashboard';
 import Protected from './Protected';
 import WithLoginNavigate from './components/Login/Login';
 import MovieList from './components/Home/Movielist';
+import Movie from './components/Home/Movie';
 
 function App() {
   
@@ -16,6 +17,7 @@ function App() {
 
                 <Route path="/dashboard"  element={<Protected><Dashboard/></Protected>} />
                 <Route path="/movies" element={<Protected><MovieList/></Protected>}/>
+                <Route path="/movie" element={<Protected><Movie/></Protected>}/>
                  <Route  path='/'  element={<WithLoginNavigate navigate={useNavigate}/>} ></Route>
     </Routes>
     </BrowserRouter>

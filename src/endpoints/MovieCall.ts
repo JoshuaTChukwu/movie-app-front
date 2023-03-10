@@ -1,5 +1,5 @@
 import { StatusFormat } from "../types/AuthType";
-import { AllMovieRes, AllMovieResObj, QueriesSearched, SearchQuery } from "../types/MovieType";
+import { AllMovieRes, AllMovieResObj, MovieSingleObj, QueriesSearched, SearchQuery } from "../types/MovieType";
 import Call from "./calls"
 export default class MovieCall {
 
@@ -53,6 +53,21 @@ export default class MovieCall {
             result.response = list
         }
         return result;
+        
+    }
+    async getSingleMovie(request:string) : Promise<MovieSingleObj> {
+        const url = `users/single/movie/get?OmdbId=${request}`
+        const movies = await this.api.getWithAuth(url);
+        
+        const status :StatusFormat = {
+            isSuccess : movies.status.isSuccess,
+            friendlyMessage : movies.status.friendlyMessage
+        }
+        const response: MovieSingleObj = {
+            response : movies.response,
+            status : status
+        }
+        return response
         
     }
 }

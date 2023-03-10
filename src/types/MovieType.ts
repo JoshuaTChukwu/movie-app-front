@@ -58,4 +58,8 @@ export type MovieRating = {
     source: string,
     value: string
   }
+  export type MovieSingleObj = {
+    response : MovieSingle,
+    status : StatusFormat
+  }
 
