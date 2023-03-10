@@ -151,6 +151,28 @@
     font-size: 1rem;
     line-height: 1.5;
   }
+  .movieInfo {
+    flex: 1;
+  }
+  
+  .movieInfo h2 {
+    font-size: 2rem;
+    margin-top: 0;
+  }
+  
+  .movieInfo ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .movieInfo li {
+    margin-bottom: 1rem;
+  }
+  
+  .movieInfo li strong {
+    font-weight: bold;
+  }
   
   
   
