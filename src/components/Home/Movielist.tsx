@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import React, { Component, useEffect } from 'react';
+import React, { Component, CSSProperties, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import call from '../../endpoints/calls';
 import MovieCall from '../../endpoints/MovieCall';
 import { AllMovieList, SearchQuery } from '../../types/MovieType';
 import HomeNav from './Home';
 import styles from './Home.module.css';
+import { ClipLoader } from 'react-spinners';
 
 interface MovieListProps {}
 interface MovieListState{
@@ -15,6 +16,7 @@ interface MovieListState{
     hasPrev : boolean,
     hasNext : boolean,
     pageNumber :number,
+    loading:boolean
 }
 
 class MovieList extends Component<MovieListProps, MovieListState>{ 
@@ -27,7 +29,8 @@ class MovieList extends Component<MovieListProps, MovieListState>{
      list :[],
      hasNext:false,
      pageNumber:1,
-     hasPrev :false
+     hasPrev :false,
+     loading:false
      }
     this.apiCall = new MovieCall(new call());
 
@@ -49,6 +52,7 @@ class MovieList extends Component<MovieListProps, MovieListState>{
     this.setState({... this.setState, title : event.target.value})
   };
    handleSubmit = async () => {
+    this.setState({...this.state, loading:true})
     const request : SearchQuery = {
         Page : this.state.pageNumber,
         SearchValue : this.state.title
@@ -62,10 +66,19 @@ class MovieList extends Component<MovieListProps, MovieListState>{
         ...this.state,
         hasPrev : movies.response.hasPrev,
         hasNext: movies.response.hasNext,
-        list : movies.response.search
+        list : movies.response.search,
+        loading:false
     })
 
     return
+  };
+  override: CSSProperties = {
+    position:"absolute",
+    top:"50%",
+    left:"50%",
+    transform:"translate(-50%, -50%)",
+    color: "white",background: "#666666", opacity: ".8",
+    zIndex: 1000,
   };
   handleClick = (event: any)=>{
     window.location.href = `movie?omdb=${event}`
@@ -80,7 +93,7 @@ class MovieList extends Component<MovieListProps, MovieListState>{
       }
 
     return(
-      <div>
+      <div className={this.state.loading ? styles.parentDisable : ''}>
         <HomeNav></HomeNav>
         <h1>Movie Search</h1>
 
@@ -102,7 +115,15 @@ class MovieList extends Component<MovieListProps, MovieListState>{
         )
     }
 </ul>
-
+<ClipLoader
+       
+       loading={this.state.loading}
+       color="#white"
+       cssOverride={this.override}
+       size={150}
+       aria-label="Loading Spinner"
+       data-testid="loader"
+     />
 
       </div>
     

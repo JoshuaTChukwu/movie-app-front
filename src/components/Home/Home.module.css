@@ -185,7 +185,8 @@
   .parentDisable{
     position: fixed;
   
-    background: #666;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
     opacity: 0.8;
     z-index: 998;
     height: 100%;
