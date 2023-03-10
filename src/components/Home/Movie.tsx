@@ -1,6 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import React, { Component, CSSProperties, useEffect } from 'react';
+import  { Component, CSSProperties } from 'react';
 import Swal from 'sweetalert2';
 import call from '../../endpoints/calls';
 import MovieCall from '../../endpoints/MovieCall';

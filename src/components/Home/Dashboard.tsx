@@ -1,4 +1,5 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, CSSProperties, useEffect } from 'react';
+import { ClipLoader } from 'react-spinners';
 import Swal from 'sweetalert2';
 import call from '../../endpoints/calls';
 import MovieCall from '../../endpoints/MovieCall';
@@ -7,7 +8,8 @@ import styles from './Home.module.css';
 
 interface DasboardProps {}
 interface DashboardState{
-    boxes: string[] 
+    boxes: string[],
+    loading:boolean 
 }
 
 class Dashboard extends Component<DasboardProps, DashboardState>{ 
@@ -15,7 +17,8 @@ class Dashboard extends Component<DasboardProps, DashboardState>{
   constructor(props: DasboardProps, private apiCall : MovieCall) {
     super(props);
     this.state ={
-        boxes :[]
+        boxes :[],
+        loading:true
     }
     this.apiCall = new MovieCall(new call());
 
@@ -35,7 +38,7 @@ class Dashboard extends Component<DasboardProps, DashboardState>{
         Swal.fire("Error",call.status.friendlyMessage,"error")
         return
     }
-    this.setState({... this.state,boxes:call.queries})
+    this.setState({... this.state,boxes:call.queries,loading:false})
    
 
     
@@ -46,10 +49,18 @@ class Dashboard extends Component<DasboardProps, DashboardState>{
     window.location.href =`movies?t=${search}`
 
   }
+  override: CSSProperties = {
+    position:"absolute",
+    top:"50%",
+    left:"50%",
+    transform:"translate(-50%, -50%)",
+    color: "white",background: "#666666", opacity: ".8",
+    zIndex: 1000,
+  };
   
   render(){
     return(
-        <div>
+        <div className={this.state.loading ? styles.parentDisable : ''}>
           <HomeNav></HomeNav>
         <div className={styles.container}>
 
@@ -69,6 +80,15 @@ class Dashboard extends Component<DasboardProps, DashboardState>{
           ))}
         </div>
       </div>
+      <ClipLoader
+       
+       loading={this.state.loading}
+       color="#white"
+       cssOverride={this.override}
+       size={150}
+       aria-label="Loading Spinner"
+       data-testid="loader"
+     />
       </div>
     
 
