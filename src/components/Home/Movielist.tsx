@@ -81,7 +81,7 @@ class MovieList extends Component<MovieListProps, MovieListState>{
         <h1>Movie Search</h1>
 
         <div className={styles.searchContainer}>
-  <input type="text" placeholder="Search..." onChange={(e) => this.handleInputChange(e)}/>
+  <input type="text" value={this.state.title} placeholder="Search..." onChange={(e) => this.handleInputChange(e)}/>
   <button className={styles.button} onClick={this.handleSubmit}><FontAwesomeIcon icon={faSearch} /></button>
 </div>
 <ul>

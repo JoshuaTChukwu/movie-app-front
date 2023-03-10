@@ -15,6 +15,9 @@ class HomeNav extends Component<HomeNavProps, HomeState>{
  
     
   }
+  home(){
+    window.location.href="dashboard"
+  }
   
   render(){
     return(
@@ -22,7 +25,7 @@ class HomeNav extends Component<HomeNavProps, HomeState>{
  
      
         <nav className={styles.navbar}>
-          <div className={styles.logo}>Vee Movies</div>
+          <div className={styles.logo} onClick={this.home}>Vee Movies</div>
           <ul className={styles.navLinks}>
           
             <li>Welcome {(this.profileName)}</li>

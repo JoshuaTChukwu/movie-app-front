@@ -28,7 +28,7 @@ export default class MovieCall {
     }
 
     async searchMovies(request :SearchQuery) : Promise<AllMovieResObj>{
-        const url = `users/movie/get?SearchValue=${request.SearchValue}&Page=${request.Page}`
+        const url = `users/search/movie/get?SearchValue=${request.SearchValue}&Page=${request.Page}`
         const movies = await this.api.getWithAuth(url);
         const status :StatusFormat = {
             isSuccess : movies.status.isSuccess,

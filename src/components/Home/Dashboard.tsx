@@ -43,6 +43,7 @@ class Dashboard extends Component<DasboardProps, DashboardState>{
 
   }
   handleClick(search:string){
+    window.location.href =`movies?t=${search}`
 
   }
   
