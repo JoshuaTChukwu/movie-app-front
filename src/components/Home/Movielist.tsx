@@ -43,19 +43,7 @@ class MovieList extends Component<MovieListProps, MovieListState>{
     }
     fetchData()
   }
-  async callList(){
-    var call = await this.apiCall.getSearchedMovie();
-    if(call.status.isSuccess == false){
-        Swal.fire("Error",call.status.friendlyMessage,"error")
-        return
-    }
-    
-   
-
-    
-    return
-
-  }
+  
 
    handleInputChange = (event: any) => {
     this.setState({... this.setState, title : event.target.value})
@@ -96,6 +84,21 @@ class MovieList extends Component<MovieListProps, MovieListState>{
   <input type="text" placeholder="Search..." onChange={(e) => this.handleInputChange(e)}/>
   <button className={styles.button} onClick={this.handleSubmit}><FontAwesomeIcon icon={faSearch} /></button>
 </div>
+<ul>
+    {
+        this.state.list.map((movie)=>(
+            <li key={movie.imdbID} className={styles.movieItem}>
+  <img className={styles.moviePoster} src={movie.poster} alt="Movie Poster"/>
+  <div className={styles.movieDetails}>
+    <h2 className={styles.movieTitle}>{movie.title}</h2>
+    <p className={styles.movieOverview}>{movie.type} - {movie.year}</p>
+  </div>
+</li>
+        )
+        )
+    }
+</ul>
+
 
       </div>
     
