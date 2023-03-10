@@ -173,6 +173,35 @@
   .movieInfo li strong {
     font-weight: bold;
   }
+  header, footer {
   
+    color: #333;
+    padding: 1rem;
+  }
+  
+  header h1, footer p {
+    text-align: center;
+  }
+  .parentDisable{
+    position: fixed;
+  
+    background: #666;
+    opacity: 0.8;
+    z-index: 998;
+    height: 100%;
+    width: 100%;
+  }
+  .overlayBox {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    color: white; background: #666666; opacity: .8;
+    z-index: 1000;
+  }
+  .section {
+    width:100%;  /* instead of width: auto */
+    text-align: center;
+  }
   
   

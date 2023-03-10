@@ -1,16 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import React, { Component, useEffect } from 'react';
+import React, { Component, CSSProperties, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import call from '../../endpoints/calls';
 import MovieCall from '../../endpoints/MovieCall';
 import HomeNav from './Home';
 import styles from './Home.module.css';
 import { MovieSingle } from '../../types/MovieType';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 interface MovieProps {}
 interface MovieState{
-    movie : MovieSingle
+    movie : MovieSingle,
+    loading :boolean
 }
 
 class Movie extends Component<MovieProps, MovieState>{ 
@@ -45,7 +47,9 @@ class Movie extends Component<MovieProps, MovieState>{
     production: '',
     website: '',
     response: ''
-      }
+      },
+      loading:true
+    
     
      }
     this.apiCall = new MovieCall(new call());
@@ -60,6 +64,14 @@ class Movie extends Component<MovieProps, MovieState>{
     }
     fetchData()
   }
+   override: CSSProperties = {
+    position:"absolute",
+    top:"50%",
+    left:"50%",
+    transform:"translate(-50%, -50%)",
+    color: "white",background: "#666666", opacity: ".8",
+    zIndex: 1000,
+  };
   
   async callList(id:string){
     var call = await this.apiCall.getSingleMovie(id);
@@ -67,7 +79,7 @@ class Movie extends Component<MovieProps, MovieState>{
         Swal.fire("Error",call.status.friendlyMessage,"error")
         return
     }
-    this.setState({... this.state,movie:call.response})
+    this.setState({... this.state,movie:call.response, loading:false})
    
 
     
@@ -85,9 +97,13 @@ class Movie extends Component<MovieProps, MovieState>{
       }
 
     return(
-      <div>
+      <div className={this.state.loading ? styles.parentDisable : ''}>
         <HomeNav></HomeNav>
-        <section>
+        <header>
+    <h1>{this.state.movie.title}</h1>
+  </header>
+        <main>
+        <div className={styles.section}>
       <img className="movie-poster" src={this.state.movie.poster} alt="Movie Poster"/>
       <div className={styles.movieInfo}>
         <h2>Movie Details</h2>
@@ -101,8 +117,17 @@ class Movie extends Component<MovieProps, MovieState>{
           <li><strong>Plot:</strong> {this.state.movie.plot}</li>
         </ul>
       </div>
-    </section>
-
+    </div>
+    </main>
+    <ClipLoader
+       
+        loading={this.state.loading}
+        color="#white"
+        cssOverride={this.override}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
 
       </div>
     
